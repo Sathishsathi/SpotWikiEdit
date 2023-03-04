@@ -1,30 +1,25 @@
-{  
-    "manifest_version": 2,
-    "name": "Spot Wiki Edit",
-    "version": "1.1.0",
-  
-    "description": "Spot Wiki Edit",
+{
+  "manifest_version": 2,
+  "name": "Spot Wiki Edit",
+  "version": "1.1.0",
 
-    "content_scripts": [
-      {
-        "matches": ["<all_urls>"],
-        "js": [
-          "SpotWikiEdit.js"
-        ]
-      }
-    ],
+  "description": "Spot Wiki Edit",
 
-    "options_ui": {
-        "page": "options/options.html",
-        "browser_style": true,
-        "chrome_style": true
-      },
-  
-    "background": {
-      "scripts": [
-        "SpotWikiEdit.js"
-      ]
+  "content_scripts": [
+    {
+      "matches": ["https://www.wikipedia.org/"],
+      "js": ["background/background.js"]
     }
+  ],
+
+  "permissions": [
+    "storage",
+    "activeTab"
+  ],
+
+  "browser_action": {
+    "default_icon": "icons/logo-12.png",
+    "default_title": "Sp",
+    "default_popup": "popup/popup.html"
   }
-  
-  
+}
