@@ -1,0 +1,25 @@
+{
+  "manifest_version": 2,
+  "name": "Spot Wiki Edit",
+  "version": "1.1.0",
+
+  "description": "Spot Wiki Edit",
+
+  "content_scripts": [
+    {
+      "matches": ["https://en.wikipedia.org/wiki/Wikipedia:Sandbox"],
+      "js": ["background/background.js"]
+    }
+  ],
+
+  "permissions": [
+    "storage",
+    "activeTab"
+  ],
+
+  "browser_action": {
+    "default_icon": "icons/logo-32.png",
+    "default_title": "Sp",
+    "default_popup": "popup/popup.html"
+  }
+}
