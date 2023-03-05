@@ -7,7 +7,7 @@
 
   "content_scripts": [
     {
-      "matches": ["https://www.wikipedia.org/"],
+      "matches": ["https://en.wikipedia.org/wiki/Wikipedia:Sandbox"],
       "js": ["background/background.js"]
     }
   ],
@@ -18,7 +18,7 @@
   ],
 
   "browser_action": {
-    "default_icon": "icons/logo-12.png",
+    "default_icon": "icons/logo-32.png",
     "default_title": "Sp",
     "default_popup": "popup/popup.html"
   }

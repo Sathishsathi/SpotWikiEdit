@@ -1,11 +1,13 @@
-var url = " ";
+var url = "https://test.wikipedia.org/w/api.php";
+var userName = "";
+var password = "";
 
 function listenForClicks() {
   document.addEventListener("click", (e) => {
     if (e.target.type === "submit") {
-      var userName = document.getElementById("userName").value;
-      var password = document.getElementById("password").value;
-      if (userName && password){
+      userName = document.getElementById("userName").value;
+      password = document.getElementById("password").value;
+      if (userName && password) {
         getLoginToken();
       }
     }
@@ -13,43 +15,51 @@ function listenForClicks() {
 }
 
 function getLoginToken() {
+  fetch(
+    url + "?action=query&meta=tokens&type=login&format=json"
+  ).then(
+    (response) => {
+      if (response.ok || true) {
+        response.json().then(json => {
+          console.log(json);
+          if(json.query.tokens){
+            loginRequest(json.query.tokens.logintoken);
+          }
+        });
+      }
+    },
+    (error) => {
+      console.log(error);
+      reportExecuteScriptError();
+    }
+  );
+}
+
+function loginRequest(logintoken) {
   
-  // var params_0 = {
-  //   action: "query",
-  //   meta: "tokens",
-  //   type: "login",
-  //   format: "json",
-  // };
+  const data = new URLSearchParams();
+  data.append("action", "login");
+  data.append("lgname", userName);
+  data.append("lgpassword", password);
+  data.append("lgtoken", logintoken);
+  data.append("format", "json");
 
-  // request.get({ url: url, qs: params_0 }, function (error, res, body) {
-  //   if (error) {
-  //     alert(error);
-  //     return;
-  //   }
-  //   alert("pass");
-  //   var data = JSON.parse(body);
-  //   loginRequest(data.query.tokens.logintoken);
-  // });
+  fetch(url, {
+    method: "post",
+    body: data,
+  }).then(
+    (response) => {
+      
+    },
+    (error) => {
 
-  const requestOptions = {
-    method: "GET",
-    headers: { "Content-Type": "application/json", "mode": "cors" },
-    body: JSON.stringify({
-      action: "query",
-      meta: "tokens",
-      type: "login",
-      format: "json",
-    }),
-  };
-
-  fetch("https://test.wikipedia.org/w/api.php?action=query&meta=tokens&type=login&format=json")
-    .then((response) => {
-      alert("success")
-      response.json()
-    }, (error)=> {
-      alert(error.query.tokens.logintoken)
-    })
-
+      browser.storage.local.set({
+        isUserLoggedInWiki: 'yes'
+      });
+      let gettingItem = browser.storage.local.get();
+      gettingItem.then((item)=>{ alert(item.isUserLoggedInWiki)}, ()=>{});
+    }
+  );
 }
 
 function reportExecuteScriptError(error) {
@@ -58,7 +68,9 @@ function reportExecuteScriptError(error) {
   console.error(`Failed to execute content script: ${error.message}`);
 }
 
+listenForClicks();
+
 browser.tabs
-  .executeScript({ file: "background/background.js" })
-  .then(listenForClicks)
-  .catch(reportExecuteScriptError);
+ .executeScript({ file: "background/background.js" })
+ .then(listenForClicks)
+ .catch(reportExecuteScriptError);
