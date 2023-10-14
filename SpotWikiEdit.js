@@ -1,3 +1,4 @@
+//SpotWikiEdit
 var body_tag = document.getElementsByTagName("body")[0]
 body_tag.setAttribute("onmouseup", "MouseUP()")
 
